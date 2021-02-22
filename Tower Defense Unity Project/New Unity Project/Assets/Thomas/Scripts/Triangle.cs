@@ -6,8 +6,8 @@ namespace Tom
 {
     [System.Serializable] public class Triangle
     {
-        [SerializeField] public Vertex v1, v2, v3;
-        [SerializeField] public HalfEdge Half_Edge;
+        public Vertex v1, v2, v3;
+        public HalfEdge Half_Edge;
 
         public Triangle(Vertex argV1, Vertex argV2, Vertex argV3)
         {

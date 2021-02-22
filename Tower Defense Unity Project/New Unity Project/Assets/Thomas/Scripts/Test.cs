@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using Tom;
 public class Test : MonoBehaviour
 {
     [SerializeField] private Vector3[] m_MeshVertices;
+    [SerializeField] private List<Vector3> m_MeshVertices2;
     [SerializeField] private List<Triangle> m_Triangles = new List<Triangle>();
     // Start is called before the first frame update
     void Start()
@@ -13,7 +15,31 @@ public class Test : MonoBehaviour
     }
     private void Awake()
     {
-
+        //Vector3 v1 = new Vector3(10, 0, 0);
+        //Vector3 v2 = new Vector3(0, -10, 0);
+        //Vector3 v3 = new Vector3(0, 10, 0);
+        //Vector3 v4 = new Vector3(0, -10, 0);
+        //Vector3 v5 = new Vector3(-5, 5, 0);
+        //Vector3 v6 = new Vector3(0, 10, 0);
+        
+        //m_MeshVertices2.Add(v1);
+        //m_MeshVertices2.Add(v2);
+        //m_MeshVertices2.Add(v3);
+        //m_MeshVertices2.Add(v4);
+        //m_MeshVertices2.Add(v5);
+        //m_MeshVertices2.Add(v6);
+        //GameObject s1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //GameObject s2 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //GameObject s3 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //GameObject s4 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //GameObject s5 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //GameObject s6 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        //s1.transform.position = v1;
+        //s2.transform.position = v2;
+        //s3.transform.position = v3;
+        //s4.transform.position = v4;
+        //s5.transform.position = v5;
+        //s6.transform.position = v6;
         Triangulate();
        
     }
@@ -125,9 +151,11 @@ public class Test : MonoBehaviour
         float lsA                       = argV1.x - argV4.x;
         float lsA1                      = argV2.x - argV4.x;
         float lsA2                      = argV3.x - argV4.x;
+
         float lsB                       = argV1.y - argV4.y;
         float lsB1                      = argV2.y - argV4.y;
         float lsB2                      = argV3.y - argV4.y;
+
         float lsC                       = lsA * lsA + lsB * lsB;
         float lsC1                      = lsA1 * lsA1 + lsB1 * lsB1;
         float lsC2                      = lsA2 * lsA2 + lsB2 * lsB2;
@@ -219,20 +247,37 @@ public class Test : MonoBehaviour
     public List<Triangle> Triangulate()
     {
 
-        m_MeshVertices = this.GetComponent<MeshFilter>().mesh.vertices;
+        //m_MeshVertices = this.GetComponent<MeshFilter>().mesh.vertices;
 
-        for (int i = 0; i < m_MeshVertices.Length; i++)
+        //for (int i = 0; i < m_MeshVertices.Length; i++)
+        //{
+        //    m_MeshVertices[i]       = m_MeshVertices[i].normalized;
+        //}
+
+        //int[] lsArrTriangles = this.GetComponent<MeshFilter>().mesh.triangles;
+
+        //for (int i = 0; i < (lsArrTriangles.Length - 3); i += 3)
+        //{
+        //    m_Triangles.Add(new Triangle(m_MeshVertices[lsArrTriangles[i]], m_MeshVertices[lsArrTriangles[i + 1]], m_MeshVertices[lsArrTriangles[i + 2]]));
+
+        //}
+
+
+
+        //for(int i=0; i < 2; i++)
+        //{
+        //    m_Triangles.Add(new Triangle(m_MeshVertices2[i], m_MeshVertices2[i+1], m_MeshVertices2[i+2]));
+        //}
+        Vector3[] lsArrTriangles = this.GetComponent<MeshFilter>().mesh.vertices;
+        List<Vertex> lsPoints = new List<Vertex>();
+
+        for (int i = 0; i < (lsArrTriangles.Length); i ++)
         {
-            m_MeshVertices[i]       = m_MeshVertices[i].normalized;
+            lsPoints.Add(new Vertex(lsArrTriangles[i]));
+
         }
 
-        int[] lsArrTriangles = this.GetComponent<MeshFilter>().mesh.triangles;
-
-        for (int i = 0; i < (lsArrTriangles.Length - 3); i += 3)
-        {
-            m_Triangles.Add(new Triangle(m_MeshVertices[lsArrTriangles[i]], m_MeshVertices[lsArrTriangles[i + 1]], m_MeshVertices[lsArrTriangles[i + 2]]));
-
-        }
+        m_Triangles = TriangulatePoints(lsPoints);
 
         List<HalfEdge> lsEdges = TransformToHalfEdge(m_Triangles);
         int lsSafety = 0;
@@ -281,4 +326,148 @@ public class Test : MonoBehaviour
         }
         return m_Triangles;
     }
+
+
+
+
+
+
+    public static List<Triangle> TriangulatePoints(List<Vertex> points)
+    {
+        List<Triangle> triangles = new List<Triangle>();
+
+        //Sort the points along x-axis
+        //OrderBy is always soring in ascending order - use OrderByDescending to get in the other order
+        points = points.OrderBy(n => n.Position.x).ToList();
+
+        //The first 3 vertices are always forming a triangle
+        Triangle newTriangle = new Triangle(points[0].Position, points[1].Position, points[2].Position);
+
+        triangles.Add(newTriangle);
+
+        //All edges that form the triangles, so we have something to test against
+        List<Edge> edges = new List<Edge>();
+
+        edges.Add(new Edge(newTriangle.v1, newTriangle.v2));
+        edges.Add(new Edge(newTriangle.v2, newTriangle.v3));
+        edges.Add(new Edge(newTriangle.v3, newTriangle.v1));
+
+        //Add the other triangles one by one
+        //Starts at 3 because we have already added 0,1,2
+        for (int i = 3; i < points.Count; i++)
+        {
+            Vector3 currentPoint = points[i].Position;
+
+            //The edges we add this loop or we will get stuck in an endless loop
+            List<Edge> newEdges = new List<Edge>();
+
+            //Is this edge visible? We only need to check if the midpoint of the edge is visible 
+            for (int j = 0; j < edges.Count; j++)
+            {
+                Edge currentEdge = edges[j];
+
+                Vector3 midPoint = (currentEdge.v1.Position + currentEdge.v2.Position) / 2f;
+
+                Edge edgeToMidpoint = new Edge(currentPoint, midPoint);
+
+                //Check if this line is intersecting
+                bool canSeeEdge = true;
+
+                for (int k = 0; k < edges.Count; k++)
+                {
+                    //Dont compare the edge with itself
+                    if (k == j)
+                    {
+                        continue;
+                    }
+
+                    if (AreEdgesIntersecting(edgeToMidpoint, edges[k]))
+                    {
+                        canSeeEdge = false;
+
+                        break;
+                    }
+                }
+
+                //This is a valid triangle
+                if (canSeeEdge)
+                {
+                    Edge edgeToPoint1 = new Edge(currentEdge.v1, new Vertex(currentPoint));
+                    Edge edgeToPoint2 = new Edge(currentEdge.v2, new Vertex(currentPoint));
+
+                    newEdges.Add(edgeToPoint1);
+                    newEdges.Add(edgeToPoint2);
+
+                    Triangle newTri = new Triangle(edgeToPoint1.v1, edgeToPoint1.v2, edgeToPoint2.v1);
+
+                    triangles.Add(newTri);
+                }
+            }
+
+
+            for (int j = 0; j < newEdges.Count; j++)
+            {
+                edges.Add(newEdges[j]);
+            }
+        }
+
+
+        return triangles;
+    }
+
+
+
+    private static bool AreEdgesIntersecting(Edge edge1, Edge edge2)
+    {
+        Vector2 l1_p1 = new Vector2(edge1.v1.Position.x, edge1.v1.Position.z);
+        Vector2 l1_p2 = new Vector2(edge1.v2.Position.x, edge1.v2.Position.z);
+
+        Vector2 l2_p1 = new Vector2(edge2.v1.Position.x, edge2.v1.Position.z);
+        Vector2 l2_p2 = new Vector2(edge2.v2.Position.x, edge2.v2.Position.z);
+
+        bool isIntersecting = AreLinesIntersecting(l1_p1, l1_p2, l2_p1, l2_p2, true);
+
+        return isIntersecting;
+    }
+
+
+
+    public static bool AreLinesIntersecting(Vector2 l1_p1, Vector2 l1_p2, Vector2 l2_p1, Vector2 l2_p2, bool shouldIncludeEndPoints)
+    {
+        //To avoid floating point precision issues we can add a small value
+        float epsilon = 0.00001f;
+
+        bool isIntersecting = false;
+
+        float denominator = (l2_p2.y - l2_p1.y) * (l1_p2.x - l1_p1.x) - (l2_p2.x - l2_p1.x) * (l1_p2.y - l1_p1.y);
+
+        //Make sure the denominator is > 0, if not the lines are parallel
+        if (denominator != 0f)
+        {
+            float u_a = ((l2_p2.x - l2_p1.x) * (l1_p1.y - l2_p1.y) - (l2_p2.y - l2_p1.y) * (l1_p1.x - l2_p1.x)) / denominator;
+            float u_b = ((l1_p2.x - l1_p1.x) * (l1_p1.y - l2_p1.y) - (l1_p2.y - l1_p1.y) * (l1_p1.x - l2_p1.x)) / denominator;
+
+            //Are the line segments intersecting if the end points are the same
+            if (shouldIncludeEndPoints)
+            {
+                //Is intersecting if u_a and u_b are between 0 and 1 or exactly 0 or 1
+                if (u_a >= 0f + epsilon && u_a <= 1f - epsilon && u_b >= 0f + epsilon && u_b <= 1f - epsilon)
+                {
+                    isIntersecting = true;
+                }
+            }
+            else
+            {
+                //Is intersecting if u_a and u_b are between 0 and 1
+                if (u_a > 0f + epsilon && u_a < 1f - epsilon && u_b > 0f + epsilon && u_b < 1f - epsilon)
+                {
+                    isIntersecting = true;
+                }
+            }
+        }
+
+        return isIntersecting;
+    }
+
+
 }

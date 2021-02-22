@@ -6,11 +6,11 @@ namespace Tom
 {
    [System.Serializable] public class HalfEdge
     {
-        [SerializeField] public Vertex Vert;
-        [SerializeField] public Triangle Tri;
-        [SerializeField] public HalfEdge NextEdge;
-        [SerializeField] public HalfEdge PrevEdge;
-        [SerializeField] public HalfEdge OppEdge;
+        public Vertex Vert;
+        public Triangle Tri;
+        public HalfEdge NextEdge;
+        public HalfEdge PrevEdge;
+        public HalfEdge OppEdge;
 
         public HalfEdge(Vertex argVert)
         {

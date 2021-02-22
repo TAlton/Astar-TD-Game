@@ -6,8 +6,8 @@ namespace Tom
 {
     [System.Serializable] public class Edge
     {
-        [SerializeField] public Vertex v1;
-        [SerializeField] public Vertex v2;
+        public Vertex v1;
+        public Vertex v2;
 
         public Edge(Vertex argV1, Vertex argV2)
         {
@@ -21,7 +21,7 @@ namespace Tom
         }
         public Vector2 GetXZ(Vertex argVert)
         {
-            return new Vector2(argVert.Position.x, argVert.Position.z);
+            return new Vector2(argVert.Position.x, argVert.Position.y);
         }
         public void FlipEdge()
         {
