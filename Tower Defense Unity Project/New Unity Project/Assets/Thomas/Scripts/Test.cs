@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Assets.Thomas.Scripts;
 
 public class Test : MonoBehaviour
 {
@@ -10,7 +11,8 @@ public class Test : MonoBehaviour
     void Start()
     {
 
-    }
+
+    } 
     private void Awake()
     {
         m_MeshVertices              = this.GetComponent<MeshFilter>().mesh.vertices;
