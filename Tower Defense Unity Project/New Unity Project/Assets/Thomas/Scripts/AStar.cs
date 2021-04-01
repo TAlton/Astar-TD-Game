@@ -134,6 +134,7 @@ public class AStar : MonoBehaviour
             lsOpenItems.Remove(lsCurrent);
             lsClosedItems.Add(lsCurrent);
 
+            //get closest neighbour based on g cost
             foreach(GridItem neighbour in GetNeighbours(lsCurrent))
             {
                 if (lsClosedItems.Contains(neighbour)) continue;
@@ -146,6 +147,7 @@ public class AStar : MonoBehaviour
                     neighbour.h = GetDistance(neighbour, lsDest);
                     neighbour.fCost();
 
+                    //if the neighbour hasnt been added 
                     if (!lsOpenItems.Contains(neighbour))
                     {
                         lsOpenItems.Add(neighbour);
