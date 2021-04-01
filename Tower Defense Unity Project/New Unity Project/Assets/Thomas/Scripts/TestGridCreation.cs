@@ -14,6 +14,7 @@ public class TestGridCreation : MonoBehaviour
 
     private void Awake()
     {
+
         Tiles = new GridItem[x, z, y];
 
         //width x

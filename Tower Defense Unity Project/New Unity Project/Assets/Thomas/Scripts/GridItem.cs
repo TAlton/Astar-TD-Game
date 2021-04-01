@@ -6,8 +6,8 @@ namespace Assets.Thomas.Scripts
 {
     [System.Serializable] public class GridItem
     {
-        private const string LAYER_ = "Grid";
-        private const string TAG_ = "Tile";
+        public const string LAYER_ = "Grid";
+        public const string TAG_ = "Tile";
         public GridItem Parent { get; set; }
         public int IndexX { get; set; }
         public int IndexY { get; set; }
