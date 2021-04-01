@@ -33,24 +33,15 @@ public class SaveGrid : MonoBehaviour
     void Save()
     {
         GetTileInformation();
-
-        if (!CheckDirectory())
-            File.Create(full_file_path_);
-
+        CheckDirectory();
+        //creates or overwrites the existing file
         File.WriteAllText(full_file_path_, file_contents_to_add_);
-
     }
 
-    bool CheckDirectory()
+    void CheckDirectory()
     {
         if(!Directory.Exists(directory_))
-        {
             Directory.CreateDirectory(directory_);
-            return false;
-        }
-
-        return true;
-
     }
     void GetTileInformation()
     {
@@ -68,6 +59,7 @@ public class SaveGrid : MonoBehaviour
         }
 
         //converts contents to a single string
-        file_contents_to_add_ = string.Concat(tile_attributes_.ToArray());
+        file_contents_to_add_ = grid_.x.ToString() + ";" +  grid_.z.ToString() + ";" + grid_.y.ToString() + "\n" + string.Concat(tile_attributes_.ToArray());
+        
     }
 }
