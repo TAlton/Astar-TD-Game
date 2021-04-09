@@ -17,6 +17,9 @@ public class TD_Map_Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+    }
+    private void Awake()
+    {
         directory_ = Application.dataPath + "/Maps";
         full_file_path_ = directory_ + "/" + file_name_;
         map_ = this.GetComponent<TD_Map>();
@@ -35,15 +38,16 @@ public class TD_Map_Manager : MonoBehaviour
         //creates or overwrites the existing file
         File.WriteAllText(full_file_path_, file_contents_to_add_);
     }
+    //returns all the tiles to update
     public List<Vector3Int> Open()
     {
+        //im so sorry you have to read this
         /*
          * should have used json but the object structure was not designed with that in mind
          * would have to create a class and set vars to write as system.serializable
          * this would sequire a restructure
          */
         List<Vector3Int> ls_list_attrs = new List<Vector3Int>();
-        Vector2Int ls_map_size;
         //string[] ls_map_text = File.ReadAllLines(full_file_path_);
         using (StreamReader ls_sr = new StreamReader(full_file_path_))
         {
@@ -66,7 +70,7 @@ public class TD_Map_Manager : MonoBehaviour
                     ls_current_index = ls_break_char_index + 1;
                     ls_break_char_index = ls_line.IndexOf(BREAK_CHAR_, ls_current_index);
                     int ls_y = int.Parse(ls_line.Substring(ls_current_index, ls_break_char_index - ls_current_index));
-                    ls_map_size = new Vector2Int(ls_x, ls_y);
+                    ls_list_attrs.Add(new Vector3Int(ls_x, ls_y, 0));
                     ls_first_line = false;
                     continue;
                 }
@@ -85,10 +89,9 @@ public class TD_Map_Manager : MonoBehaviour
                 int ls_content_id = int.Parse(ls_line.Substring(ls_current_index, ls_break_char_index - ls_current_index));
 
 
-                ls_list_attrs.Add(new Vector3Int(ls_index_y, ls_index_x, ls_content_id));
+                ls_list_attrs.Add(new Vector3Int(ls_index_x, ls_index_y, ls_content_id));
             }
         }
-
         return ls_list_attrs;
     }
     private void CheckDirectory()
