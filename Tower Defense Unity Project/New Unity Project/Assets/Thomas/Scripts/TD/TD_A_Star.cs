@@ -23,9 +23,9 @@ public class TD_A_Star : MonoBehaviour
     {
 
     }
-    public void Resolve()
+    public void Resolve(Vector3 arg_start)
     {
-        ResolveAStar(GetTileByPosition(new Vector3(-3.5f, 0f, -3.5f)), map_.destination_);
+        ResolveAStar(GetTileByPosition(new Vector3(arg_start.x, 0f, arg_start.z)), map_.destination_);
     }
     TD_Tile GetTileByPosition(Vector3 argPos)
     {

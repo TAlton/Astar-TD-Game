@@ -2,14 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TileContentType { EMPTY = 0, DESTINATION, WALL, TOWER, SPAWN}
-
-public class TD_Tile_Content : MonoBehaviour
+public enum EnemyType { DEFAULT = 0, HOVERING, FLYING }
+public class TD_Enemy_Type : MonoBehaviour
 {
-    [SerializeField] TileContentType type_ = TileContentType.EMPTY;
-    TD_Tile_Factory origin_;
-    public TileContentType Type => type_;
-
+    [SerializeField] EnemyType type_ = EnemyType.DEFAULT;
+    TD_Enemy_Factory origin_;
+    public EnemyType Type => type_;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +19,8 @@ public class TD_Tile_Content : MonoBehaviour
     {
         
     }
-    public TD_Tile_Factory OriginFactory
+
+    public TD_Enemy_Factory OriginFactory
     {
         get => origin_;
         set

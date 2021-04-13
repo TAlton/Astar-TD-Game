@@ -251,6 +251,7 @@ MonoBehaviour:
   map_size_: {x: 0, y: 0}
   prefab_: {fileID: 5290614874748367161, guid: e05a360309cb6ac4a9273bbf0ea2db7b, type: 3}
   destination_: {fileID: 0}
+  spawn_points_: []
 --- !u!114 &1689820188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,9 +264,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c58dace918cb47e49b81c338badf7ea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  map_width_: 8
-  map_height_: 8
+  map_width_: 20
+  map_height_: 20
   map_: {fileID: 0}
+  pathfinding_: {fileID: 0}
   tile_factory_: {fileID: 11400000, guid: 9ce5dd43cb79cbb43b577bcfa2a97769, type: 2}
   map_manager_: {fileID: 0}
 --- !u!4 &1689820189
@@ -384,7 +386,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1880250437}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 12.97, z: -0.09}
+  m_LocalPosition: {x: 0, y: 18.81, z: -0.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -482,6 +484,7 @@ MonoBehaviour:
   map_width_: 0
   map_height_: 0
   map_: {fileID: 0}
+  pathfinding_: {fileID: 0}
   tile_factory_: {fileID: 11400000, guid: 9ce5dd43cb79cbb43b577bcfa2a97769, type: 2}
   map_manager_: {fileID: 0}
 --- !u!114 &2128338092
@@ -499,3 +502,4 @@ MonoBehaviour:
   map_size_: {x: 0, y: 0}
   prefab_: {fileID: 0}
   destination_: {fileID: 0}
+  spawn_points_: []

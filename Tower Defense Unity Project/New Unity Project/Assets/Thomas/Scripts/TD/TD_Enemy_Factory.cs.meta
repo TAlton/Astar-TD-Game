@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7983f7290765206439c5d098187176b2
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - prefab_default_enemy_: {fileID: 7148333919738649425, guid: ff87febd22244d448bfae3ee2d1f15f1, type: 3}
+  - prefab_flying_enemy_: {fileID: 5618844424007298024, guid: 664de494ff4489347b34a4568243a732, type: 3}
+  - prefab_hovering_enemy_: {fileID: 142675452279935239, guid: 447067971ac951440913a376448bcd7b, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

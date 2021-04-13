@@ -75,6 +75,8 @@ public class TD_Map_Manager : MonoBehaviour
                     continue;
                 }
 
+
+                //should be a loop but is works as is
                 int ls_index_y = int.Parse(ls_line.Substring(ls_current_index, ls_break_char_index));
                 //save current index
                 ls_current_index = ls_break_char_index + 1;
@@ -106,7 +108,7 @@ public class TD_Map_Manager : MonoBehaviour
             for(int i_x = 0; i_x < map_.map_size_.x; i_x++)
             {
                 TD_Tile ls_tile = map_.map_tiles_[i_y, i_x];
-                //only save the tiles that aent empty
+                //only save the tiles that arent empty
                 if (TileContentType.EMPTY == ls_tile.Content.Type) 
                     continue;
                 //saves the index of the tile and the type of content the tile holds

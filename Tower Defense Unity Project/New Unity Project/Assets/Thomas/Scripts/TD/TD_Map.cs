@@ -7,12 +7,13 @@ public class TD_Map : MonoBehaviour
     public Vector2Int map_size_;
     public TD_Tile prefab_;
     public TD_Tile destination_;
+    public List<TD_Tile> spawn_points_;
     public TD_Tile[,] map_tiles_;
     TD_Tile_Factory tile_factory_;
     // Start is called before the first frame update
     void Start()
     {
-        
+        spawn_points_ = new List<TD_Tile>();
     }
 
     // Update is called once per frame
@@ -84,8 +85,17 @@ public class TD_Map : MonoBehaviour
                             ls_tile.IndexY = i_y;
                             ls_loaded_tiles_index++;
                             continue;
+                        } else if(TileContentType.SPAWN == ls_tile.Content.Type)
+                        {
+                            spawn_points_.Add(ls_tile); 
+                            ls_tile.is_blocking_ = false;
+                            ls_tile.Parent = null;
+                            ls_tile.g = int.MaxValue;
+                            ls_tile.IndexX = i_x;
+                            ls_tile.IndexY = i_y;
+                            ls_loaded_tiles_index++;
+                            continue;
                         }
-                            destination_ = ls_tile;
 
                         ls_tile.is_blocking_ = true;
                         ls_tile.Parent = null;
