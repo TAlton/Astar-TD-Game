@@ -25,6 +25,8 @@ public class TD_A_Star : MonoBehaviour
     }
     public List<TD_Tile> Resolve(Vector3 arg_start)
     {
+        map_ = this.GetComponent<TD_Map>();
+        delta = 0.49f;
         return ResolveAStar(GetTileByPosition(new Vector3(arg_start.x, 0f, arg_start.z)), map_.destination_);
     }
     TD_Tile GetTileByPosition(Vector3 argPos)
@@ -55,6 +57,7 @@ public class TD_A_Star : MonoBehaviour
     }
     float GetDistance(TD_Tile arg_tile_a, TD_Tile arg_tile_b)
     {
+        //currently uses manhattan distance to change to euclidian we find dxy = sqrt((a-b)^2)
         float lsDeltaX = Mathf.Abs(arg_tile_a.transform.position.x - arg_tile_b.transform.position.x);
         float lsDeltaY = Mathf.Abs(arg_tile_a.transform.position.z - arg_tile_b.transform.position.z);
 
@@ -82,78 +85,79 @@ public class TD_A_Star : MonoBehaviour
         ls_path.Reverse();
         return ls_path;
     }
-    void ResolveAStar(Vector3 arg_start_pos, Vector3 arg_dest_pos)
-    {
-        TD_Tile ls_start = GetTileByPosition(arg_start_pos);
-        TD_Tile ls_dest = GetTileByPosition(arg_dest_pos);
+    //void ResolveAStar(Vector3 arg_start_pos, Vector3 arg_dest_pos)
+    //{
+    //    TD_Tile ls_start = GetTileByPosition(arg_start_pos);
+    //    TD_Tile ls_dest = GetTileByPosition(arg_dest_pos);
 
-        if (null == ls_start || null == ls_dest) return;
+    //    if (null == ls_start || null == ls_dest) return;
 
-        List<TD_Tile> ls_open_items = new List<TD_Tile> { ls_start };
-        HashSet<TD_Tile> ls_closed_items = new HashSet<TD_Tile>();
+    //    List<TD_Tile> ls_open_items = new List<TD_Tile> { ls_start };
+    //    HashSet<TD_Tile> ls_closed_items = new HashSet<TD_Tile>();
 
-        //initialising costs of path to default val
-        for (int i_y = 0; i_y < map_.map_size_.y; i_y++)
-        {
-            for (int i_x = 0; i_x < map_.map_size_.x; i_x++)
-            {
-                map_.map_tiles_[i_y, i_x].g = int.MaxValue;
-                map_.map_tiles_[i_y, i_x].Parent = null;
-            }
-        }
+    //    //initialising costs of path to default val
+    //    for (int i_y = 0; i_y < map_.map_size_.y; i_y++)
+    //    {
+    //        for (int i_x = 0; i_x < map_.map_size_.x; i_x++)
+    //        {
+    //            map_.map_tiles_[i_y, i_x].g = int.MaxValue;
+    //            map_.map_tiles_[i_y, i_x].Parent = null;
+    //        }
+    //    }
 
-        ls_start.g = 0;
-        ls_start.h = GetDistance(ls_start, ls_dest);
-        ls_start.fCost();
+    //    ls_start.g = 0;
+    //    ls_start.h = GetDistance(ls_start, ls_dest);
+    //    ls_start.fCost();
 
-        TD_Tile lsCurrent = ls_open_items[0];
+    //    TD_Tile lsCurrent = ls_open_items[0];
 
-        while (ls_open_items.Count > 0)
-        {
+    //    while (ls_open_items.Count > 0)
+    //    {
 
-            for (int i = 1; i < ls_open_items.Count; i++)
-            {
-                if (ls_open_items[i].GetFCost() < lsCurrent.GetFCost() || lsCurrent.GetFCost() == ls_open_items[i].GetFCost() && ls_open_items[i].h < lsCurrent.h)
-                {
-                    lsCurrent = ls_open_items[i];
-                }
-            }
+    //        for (int i = 1; i < ls_open_items.Count; i++)
+    //        {
+    //            if (ls_open_items[i].GetFCost() < lsCurrent.GetFCost() || lsCurrent.GetFCost() == ls_open_items[i].GetFCost() && ls_open_items[i].h < lsCurrent.h)
+    //            {
+    //                lsCurrent = ls_open_items[i];
+    //            }
+    //        }
 
-            ls_open_items.Remove(lsCurrent);
-            ls_closed_items.Add(lsCurrent);
+    //        ls_open_items.Remove(lsCurrent);
+    //        ls_closed_items.Add(lsCurrent);
 
-            //get closest neighbour based on g cost
-            foreach (TD_Tile neighbour in GetNeighbours(lsCurrent))
-            {
-                if (ls_closed_items.Contains(neighbour))
-                    continue;
-                if (neighbour.is_blocking_) continue;
-                double lsPredictedGCost = lsCurrent.g + GetDistance(lsCurrent, neighbour);
-                if (lsPredictedGCost < neighbour.g)
-                {
-                    neighbour.Parent = lsCurrent;
-                    neighbour.g = lsPredictedGCost;
-                    neighbour.h = GetDistance(neighbour, ls_dest);
-                    neighbour.fCost();
+    //        //get closest neighbour based on g cost
+    //        foreach (TD_Tile neighbour in GetNeighbours(lsCurrent))
+    //        {
+    //            if (ls_closed_items.Contains(neighbour))
+    //                continue;
+    //            if (neighbour.is_blocking_) continue;
+    //            double lsPredictedGCost = lsCurrent.g + GetDistance(lsCurrent, neighbour);
+    //            if (lsPredictedGCost < neighbour.g)
+    //            {
+    //                neighbour.Parent = lsCurrent;
+    //                neighbour.g = lsPredictedGCost;
+    //                neighbour.h = GetDistance(neighbour, ls_dest);
+    //                neighbour.fCost();
 
-                    //if the neighbour hasnt been added 
-                    if (!ls_open_items.Contains(neighbour))
-                    {
-                        ls_open_items.Add(neighbour);
-                    }
-                }
-            }
+    //                //if the neighbour hasnt been added 
+    //                if (!ls_open_items.Contains(neighbour))
+    //                {
+    //                    ls_open_items.Add(neighbour);
+    //                }
+    //            }
+    //        }
 
-            if (lsCurrent == ls_dest)
-            {
-                TracePath(ls_start, ls_dest);
-                return;
-            }
-        }
-    }
+    //        if (lsCurrent == ls_dest)
+    //        {
+    //            TracePath(ls_start, ls_dest);
+    //            return;
+    //        }
+    //    }
+    //}
 
     private List<TD_Tile> GetNeighbours(TD_Tile arg_node)
     {
+        //adjusted the algorithm to only allow for no diagonal movement
         List<TD_Tile> ls_neighbours = new List<TD_Tile>();
         if (arg_node.IndexX - 1 >= 0)
         {
@@ -216,6 +220,7 @@ public class TD_A_Star : MonoBehaviour
                 {
                     neighbour.Parent = ls_current_tile;
                     neighbour.g = lsPredictedGCost;
+                    //we can adjust this value to perform djikstras by making the heuristic = 0; currently using the best first
                     neighbour.h = GetDistance(neighbour, arg_dest);
                     neighbour.fCost();
 

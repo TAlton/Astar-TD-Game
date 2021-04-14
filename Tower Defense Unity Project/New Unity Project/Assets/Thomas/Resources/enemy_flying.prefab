@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 107948682636430489}
   - component: {fileID: 5618844424007298024}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: enemy_flying
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2010259615473052909}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3231293284342551892}
@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 1846439589560173411}
   - component: {fileID: 636928422403070525}
   - component: {fileID: 7759635368798055820}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: enemy_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7482896252299530422}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 107948682636430489}

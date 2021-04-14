@@ -13,7 +13,7 @@ public class TD_Map : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        spawn_points_ = new List<TD_Tile>();
+
     }
 
     // Update is called once per frame
@@ -28,6 +28,7 @@ public class TD_Map : MonoBehaviour
     }
     public void Init(int arg_x, int arg_y, TD_Tile_Factory arg_factory)
     {
+        spawn_points_ = new List<TD_Tile>();
         this.map_size_ = new Vector2Int(arg_x, arg_y);
         this.tile_factory_ = arg_factory;
         map_tiles_ = new TD_Tile[arg_y, arg_x];
@@ -51,6 +52,7 @@ public class TD_Map : MonoBehaviour
     }
     public void Init(TD_Tile_Factory arg_factory, List<Vector3Int> arg_loaded_tiles)
     {
+        spawn_points_ = new List<TD_Tile>();
         this.map_size_ = new Vector2Int(arg_loaded_tiles[0].x, arg_loaded_tiles[0].y);
         this.tile_factory_ = arg_factory;
         map_tiles_ = new TD_Tile[map_size_.y, map_size_.x];
@@ -85,6 +87,7 @@ public class TD_Map : MonoBehaviour
                             ls_tile.IndexY = i_y;
                             ls_loaded_tiles_index++;
                             continue;
+
                         } else if(TileContentType.SPAWN == ls_tile.Content.Type)
                         {
                             spawn_points_.Add(ls_tile); 

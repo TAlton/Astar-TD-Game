@@ -249,7 +249,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   map_size_: {x: 0, y: 0}
-  prefab_: {fileID: 5290614874748367161, guid: e05a360309cb6ac4a9273bbf0ea2db7b, type: 3}
+  prefab_tile_: {fileID: 5290614874748367161, guid: e05a360309cb6ac4a9273bbf0ea2db7b, type: 3}
   destination_: {fileID: 0}
   spawn_points_: []
 --- !u!114 &1689820188
@@ -269,6 +269,7 @@ MonoBehaviour:
   enemies_to_spawn_: 1
   tile_factory_: {fileID: 11400000, guid: 9ce5dd43cb79cbb43b577bcfa2a97769, type: 2}
   enemy_factory_: {fileID: 11400000, guid: 7ee7f115af8cf6c4e8daf2fa695946f9, type: 2}
+  prefab_enemy_: {fileID: 2392893495854990931, guid: 562111ff64dfa4143983d8b24eb37ab2, type: 3}
   list_enemies_: []
 --- !u!4 &1689820189
 Transform:
@@ -486,6 +487,7 @@ MonoBehaviour:
   enemies_to_spawn_: 1
   tile_factory_: {fileID: 11400000, guid: 9ce5dd43cb79cbb43b577bcfa2a97769, type: 2}
   enemy_factory_: {fileID: 0}
+  prefab_enemy_: {fileID: 0}
   list_enemies_: []
 --- !u!114 &2128338092
 MonoBehaviour:
@@ -500,6 +502,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   map_size_: {x: 0, y: 0}
-  prefab_: {fileID: 0}
+  prefab_tile_: {fileID: 0}
   destination_: {fileID: 0}
   spawn_points_: []

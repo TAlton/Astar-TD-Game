@@ -205,10 +205,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f4b24c2553f66344bf1ac2a78472663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range_: 1
+  range_: 2
   collided_objects_: []
-  fire_rate_: 1
-  damage_: 5
+  fire_rate_: 0.25
+  damage_: 10
 --- !u!1 &6742161735428785860
 GameObject:
   m_ObjectHideFlags: 0

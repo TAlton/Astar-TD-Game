@@ -5,9 +5,12 @@ using UnityEngine;
 public class TD_Enemy : MonoBehaviour
 {
     [SerializeField] TD_Enemy_Type enemy_type_;
+    [SerializeField] TD_Game game_;
     public List<TD_Tile> list_path_;
     private int current_path_index = 0;
-    private float progress_ = 0.0f;
+    private float move_speed_ = 5.0f;
+    private float health_ = 100.0f;
+    private bool is_dead = false;
     public TD_Enemy_Type Type
     {
         get => enemy_type_;
@@ -19,12 +22,13 @@ public class TD_Enemy : MonoBehaviour
             }
             enemy_type_ = value;
             enemy_type_.transform.localPosition = transform.localPosition;
+            enemy_type_.transform.parent = transform;
         }
     }
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        list_path_ = new List<TD_Tile>();
+        game_ = GameObject.FindGameObjectWithTag("GameManager").GetComponent<TD_Game>();
     }
 
     // Update is called once per frame
@@ -32,13 +36,36 @@ public class TD_Enemy : MonoBehaviour
     {
         if (current_path_index >= list_path_.Count || list_path_[0] == null)
             return;
-        if (progress_ >= 1.0f)
+
+        if (this.transform.position != list_path_[list_path_.Count - 1].transform.position)
         {
-            progress_ = 0.0f + Time.deltaTime;
-            current_path_index++;
+
+            this.gameObject.transform.position = Vector3.MoveTowards(this.gameObject.transform.position, list_path_[current_path_index].transform.position, move_speed_ * Time.deltaTime);
+
+            if (this.gameObject.transform.position == list_path_[current_path_index].transform.position)
+            {
+                if(current_path_index == list_path_.Count - 1)
+                {
+                    game_.RemoveLife();
+                    game_.KillEnemy(this);
+                }
+                current_path_index++;
+            }
+
+            
         }
-        this.gameObject.transform.position = Vector3.Lerp(this.transform.position, list_path_[current_path_index].transform.position, (progress_));
-        enemy_type_.gameObject.transform.position = this.transform.position;
-        progress_ += Time.deltaTime;
+        
     }
+    public void Damage(float arg_damage)
+    {
+        this.health_ -= arg_damage;
+        if (health_ <= 0.0f)
+        {
+            is_dead = true;
+            game_.KillEnemy(this);
+        }
+
+    }
+    public bool isDead() { return is_dead; }
+    public float GetHealth() { return health_; }
 }

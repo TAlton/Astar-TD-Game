@@ -11,10 +11,12 @@ public class TD_Game : MonoBehaviour
     [Range(MAP_RANGE_MIN_, MAP_RANGE_MAX_)] public int map_width_ = MAP_RANGE_MIN_;
     [Range(MAP_RANGE_MIN_, MAP_RANGE_MAX_)] public int map_height_ = MAP_RANGE_MIN_;
     [Range(ENEMIES_RANGE_MIN_, ENEMIES_RANGE_MAX_)] public int enemies_to_spawn_ = ENEMIES_RANGE_MIN_;
+    private int enemies_spawned_ = 0;
     [SerializeField] TD_Map map_ => this.GetComponent<TD_Map>();
     [SerializeField] TD_A_Star pathfinding_ => this.GetComponent<TD_A_Star>();
     [SerializeField] TD_Tile_Factory tile_factory_;
     [SerializeField] TD_Enemy_Factory enemy_factory_;
+    [SerializeField] int player_lives_;
     [SerializeField] TD_Map_Manager map_manager_ => this.GetComponent<TD_Map_Manager>();
     public TD_Enemy prefab_enemy_;
     public List<TD_Enemy> list_enemies_;
@@ -26,8 +28,8 @@ public class TD_Game : MonoBehaviour
         map_.Init(tile_factory_, map_manager_.Open());
         list_enemies_ = new List<TD_Enemy>();
         list_path_ = new List<TD_Tile>();
-        //SpawnEnemy();
-        //map_.Init(map_width_, map_height_, tile_factory_);
+        list_path_ = pathfinding_.Resolve(map_.spawn_points_[0].transform.position);
+        InvokeRepeating("SpawnEnemy", 0.0f, 0.25f);
     }
 
     private void Awake()
@@ -78,13 +80,35 @@ public class TD_Game : MonoBehaviour
         {
             list_enemies_[0].list_path_ = list_path_;
         }
-
     }
     public void SpawnEnemy()
     {
-        TD_Enemy temp = Instantiate(prefab_enemy_, new Vector3(map_.spawn_points_[0].transform.position.x, 0.5f, map_.spawn_points_[0].transform.position.z), Quaternion.identity);
+        if (enemies_spawned_ >= enemies_to_spawn_)
+        {
+            CancelInvoke("SpawnEnemy");
+            return;
+        }
+
+        enemies_spawned_++;
+        TD_Enemy temp = Instantiate(prefab_enemy_, new Vector3(map_.spawn_points_[0].transform.position.x, 0.0f, map_.spawn_points_[0].transform.position.z), Quaternion.identity);
         temp.Type = enemy_factory_.Get(EnemyType.DEFAULT);
         temp.list_path_ = list_path_;
         list_enemies_.Add(temp);
+    }
+    public void KillEnemy(TD_Enemy arg_enemy)
+    {
+        list_enemies_.Remove(arg_enemy);
+        list_enemies_.TrimExcess();
+        Destroy(arg_enemy.transform.root.gameObject);
+    }
+    public void RemoveLife()
+    {
+        if (player_lives_ > 1)
+        {
+            player_lives_--;
+            return;
+        }
+        //end game stuff
+
     }
 }
