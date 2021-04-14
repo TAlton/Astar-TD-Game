@@ -89,10 +89,30 @@ public class TD_Game : MonoBehaviour
             return;
         }
 
+        
         enemies_spawned_++;
         TD_Enemy temp = Instantiate(prefab_enemy_, new Vector3(map_.spawn_points_[0].transform.position.x, 0.0f, map_.spawn_points_[0].transform.position.z), Quaternion.identity);
-        temp.Type = enemy_factory_.Get(EnemyType.DEFAULT);
-        temp.list_path_ = list_path_;
+        int chosen_type = Random.Range(0, 3);
+        temp.Type = enemy_factory_.Get((EnemyType)(chosen_type));
+        switch (chosen_type)
+        {
+            case (int)(EnemyType.DEFAULT):
+                {
+                    temp.list_path_ = list_path_;
+                    break;
+                }
+            case (int)(EnemyType.FLYING):
+                {
+                    //flying enemies will fly to dest
+                    temp.list_path_.Add(map_.destination_);
+                    break;
+                }
+            case (int)(EnemyType.HOVERING):
+                {
+                    temp.list_path_ = list_path_;
+                    break;
+                }
+        }
         list_enemies_.Add(temp);
     }
     public void KillEnemy(TD_Enemy arg_enemy)
