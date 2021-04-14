@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnemyType { DEFAULT = 0, HOVERING, FLYING }
+public enum EnemyType { DEFAULT = 1, HOVERING, FLYING }
 public class TD_Enemy_Type : MonoBehaviour
 {
     [SerializeField] EnemyType type_ = EnemyType.DEFAULT;

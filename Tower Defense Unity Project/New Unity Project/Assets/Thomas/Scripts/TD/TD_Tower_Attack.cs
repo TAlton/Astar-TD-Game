@@ -28,12 +28,11 @@ public class TD_Tower_Attack : MonoBehaviour
     }
     void Fire()
     {
-        if (collided_objects_.Length == 0)
+        if (collided_objects_.Length <= 0)
+            return;
+        if (collided_objects_[0] == null)
             return;
         TD_Enemy target_ = collided_objects_[0].gameObject.GetComponentInParent<TD_Enemy>();
-
-        if (target_ == null) 
-            return;
 
         if (!target_.isDead())
         {

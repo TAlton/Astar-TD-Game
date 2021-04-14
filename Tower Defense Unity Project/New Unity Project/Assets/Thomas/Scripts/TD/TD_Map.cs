@@ -158,23 +158,49 @@ public class TD_Map : MonoBehaviour
         arg_tile.Content = tile_factory_.Get(TileContentType.WALL);
         arg_tile.is_blocking_ = true;
     }
-    public void ToggleOil(TD_Tile arg_tile)
+    public bool ToggleOil(TD_Tile arg_tile)
     {
         if (arg_tile.Content.Type == TileContentType.OIL)
         {
+
             arg_tile.Content = tile_factory_.Get(TileContentType.EMPTY);
-            return;
+            return false;
+
+        }else if(arg_tile.Content.Type == TileContentType.EMPTY) {
+
+            arg_tile.Content = tile_factory_.Get(TileContentType.OIL);
+            return true;
+
         }
-        //ditto
-        arg_tile.Content = tile_factory_.Get(TileContentType.OIL);
+
+        return false;
+
+    }
+    public bool ToggleTower(TD_Tile arg_tile)
+    {
+        if (arg_tile.Content.Type == TileContentType.WALL)
+        {
+            arg_tile.Content = tile_factory_.Get(TileContentType.TOWER);
+            return true;
+        }
+        else if (arg_tile.Content.Type == TileContentType.TOWER)
+        {
+            arg_tile.Content = tile_factory_.Get(TileContentType.WALL);
+            return false;
+        }
+
+        return false;
+
     }
     public void SetDestination(TD_Tile arg_tile)
     {
-        if(null != destination_)
+        if(null != destination_ && arg_tile.Content.Type == TileContentType.EMPTY)
             destination_.Content = tile_factory_.Get(TileContentType.EMPTY);
-
-        destination_ = arg_tile;
-        arg_tile.Content = tile_factory_.Get(TileContentType.DESTINATION);
+        if(arg_tile.Content.Type == TileContentType.EMPTY)
+        {
+            destination_ = arg_tile;
+            arg_tile.Content = tile_factory_.Get(TileContentType.DESTINATION);
+        }
     }
 
 }
