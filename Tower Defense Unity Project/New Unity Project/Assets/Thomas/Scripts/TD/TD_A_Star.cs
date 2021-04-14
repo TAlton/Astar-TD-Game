@@ -8,8 +8,6 @@ public class TD_A_Star : MonoBehaviour
     public TD_Map map_;
     private const int COST_MOVE_STRAIGHT = 10;
     private const int COST_MOVE_DIAGONAL = 14;
-    private int[,] m_ClosedNodes;
-    private int[,] m_OpenNodes;
     private float delta;
     // Start is called before the first frame update
     void Start()
@@ -23,11 +21,12 @@ public class TD_A_Star : MonoBehaviour
     {
 
     }
-    public List<TD_Tile> Resolve(Vector3 arg_start)
+    public List<TD_Tile> Resolve(Vector3 arg_start, EnemyType arg_type)
     {
-        map_ = this.GetComponent<TD_Map>();
+        if(map_ == null)
+            map_ = this.GetComponent<TD_Map>();
         delta = 0.49f;
-        return ResolveAStar(GetTileByPosition(new Vector3(arg_start.x, 0f, arg_start.z)), map_.destination_);
+        return ResolveAStar(GetTileByPosition(new Vector3(arg_start.x, 0f, arg_start.z)), map_.destination_, arg_type);
     }
     TD_Tile GetTileByPosition(Vector3 argPos)
     {
@@ -78,7 +77,7 @@ public class TD_A_Star : MonoBehaviour
         while (ls_current.Parent != null)
         {
             ls_path.Add(ls_current.Parent);
-            ls_current.GetComponentInChildren<MeshRenderer>().material = (Material)(Resources.Load("pathing"));
+            //ls_current.GetComponentInChildren<MeshRenderer>().material = (Material)(Resources.Load("pathing"));
             ls_current = ls_current.Parent;
         }
 
@@ -176,9 +175,17 @@ public class TD_A_Star : MonoBehaviour
 
         return ls_neighbours;
     }
-    public List<TD_Tile> ResolveAStar(TD_Tile arg_start, TD_Tile arg_dest)
+    public List<TD_Tile> ResolveAStar(TD_Tile arg_start, TD_Tile arg_dest, EnemyType arg_type)
     {
         if (null == arg_start || null == arg_dest) return null;
+
+        for(int y = 0; y < map_.map_tiles_.GetLength(0); y++)
+        {
+            for(int x = 0; x < map_.map_tiles_.GetLength(1); x++)
+            {
+                map_.map_tiles_[y, x].g = int.MaxValue;
+            }
+        }
 
         List<TD_Tile> ls_open_items = new List<TD_Tile> { arg_start };
         HashSet<TD_Tile> ls_closed_items = new HashSet<TD_Tile>();
@@ -215,7 +222,14 @@ public class TD_A_Star : MonoBehaviour
                     continue;
                 if (neighbour.is_blocking_)
                     continue;
-                double lsPredictedGCost = ls_current_tile.g + GetDistance(ls_current_tile, neighbour);
+
+                double modifier_ = 1.0f;
+
+                //if there is an oil slick and the enemy isnt floating
+                if (TileContentType.OIL == neighbour.Content.Type && arg_type != EnemyType.HOVERING)
+                    modifier_ = 5.0f;
+
+                double lsPredictedGCost = ls_current_tile.g + (GetDistance(ls_current_tile, neighbour) * modifier_);
                 if (lsPredictedGCost < neighbour.g)
                 {
                     neighbour.Parent = ls_current_tile;

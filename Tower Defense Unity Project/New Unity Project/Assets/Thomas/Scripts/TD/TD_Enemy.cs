@@ -8,7 +8,8 @@ public class TD_Enemy : MonoBehaviour
     [SerializeField] TD_Game game_;
     public List<TD_Tile> list_path_;
     private int current_path_index = 0;
-    private float move_speed_ = 5.0f;
+    private const float MOVE_SPEED_ = 5.0f;
+    private float current_move_speed_ = MOVE_SPEED_;
     private float health_ = 100.0f;
     private bool is_dead = false;
     public TD_Enemy_Type Type
@@ -29,6 +30,7 @@ public class TD_Enemy : MonoBehaviour
     void Awake()
     {
         game_ = GameObject.FindGameObjectWithTag("GameManager").GetComponent<TD_Game>();
+        current_move_speed_ = MOVE_SPEED_;
     }
 
     // Update is called once per frame
@@ -37,10 +39,17 @@ public class TD_Enemy : MonoBehaviour
         if (current_path_index >= list_path_.Count || list_path_[0] == null)
             return;
 
+        if(list_path_[current_path_index].Content.Type == TileContentType.OIL && enemy_type_.Type != EnemyType.HOVERING)
+        {
+            current_move_speed_ = MOVE_SPEED_ / 5.0f;
+        } else
+        {
+            current_move_speed_ = MOVE_SPEED_;
+        }
+
         if (this.transform.position != list_path_[list_path_.Count - 1].transform.position)
         {
-
-            this.gameObject.transform.position = Vector3.MoveTowards(this.gameObject.transform.position, list_path_[current_path_index].transform.position, move_speed_ * Time.deltaTime);
+            this.gameObject.transform.position = Vector3.MoveTowards(this.gameObject.transform.position, list_path_[current_path_index].transform.position, current_move_speed_ * Time.deltaTime);
 
             if (this.gameObject.transform.position == list_path_[current_path_index].transform.position)
             {

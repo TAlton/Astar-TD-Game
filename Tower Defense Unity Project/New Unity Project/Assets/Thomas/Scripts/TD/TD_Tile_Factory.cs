@@ -11,6 +11,7 @@ public class TD_Tile_Factory : ScriptableObject
     [SerializeField] TD_Tile_Content prefab_wall_;
     [SerializeField] TD_Tile_Content prefab_tower_;
     [SerializeField] TD_Tile_Content prefab_spawn_point_;
+    [SerializeField] TD_Tile_Content prefab_oil_;
     Scene content_scene;
     // Start is called before the first frame update
     void Start()
@@ -42,6 +43,7 @@ public class TD_Tile_Factory : ScriptableObject
             case TileContentType.WALL:          return Get(prefab_wall_);
             case TileContentType.TOWER:         return Get(prefab_tower_);
             case TileContentType.SPAWN:         return Get(prefab_spawn_point_);
+            case TileContentType.OIL:           return Get(prefab_oil_);
         }
         return null;
     }

@@ -77,6 +77,7 @@ public class TD_Map : MonoBehaviour
                         ls_tile.transform.position = new Vector3(i_x - ls_offset.x, 0, i_y - ls_offset.y);
                         ls_tile.Content = tile_factory_.Get((TileContentType)(arg_loaded_tiles[ls_loaded_tiles_index].z));
 
+                        //should be a switch here
                         if (TileContentType.DESTINATION == ls_tile.Content.Type)
                         {
                             destination_ = ls_tile;
@@ -91,6 +92,16 @@ public class TD_Map : MonoBehaviour
                         } else if(TileContentType.SPAWN == ls_tile.Content.Type)
                         {
                             spawn_points_.Add(ls_tile); 
+                            ls_tile.is_blocking_ = false;
+                            ls_tile.Parent = null;
+                            ls_tile.g = int.MaxValue;
+                            ls_tile.IndexX = i_x;
+                            ls_tile.IndexY = i_y;
+                            ls_loaded_tiles_index++;
+                            continue;
+                        }
+                        else if (TileContentType.OIL == ls_tile.Content.Type)
+                        {
                             ls_tile.is_blocking_ = false;
                             ls_tile.Parent = null;
                             ls_tile.g = int.MaxValue;
@@ -146,6 +157,16 @@ public class TD_Map : MonoBehaviour
         //ditto
         arg_tile.Content = tile_factory_.Get(TileContentType.WALL);
         arg_tile.is_blocking_ = true;
+    }
+    public void ToggleOil(TD_Tile arg_tile)
+    {
+        if (arg_tile.Content.Type == TileContentType.OIL)
+        {
+            arg_tile.Content = tile_factory_.Get(TileContentType.EMPTY);
+            return;
+        }
+        //ditto
+        arg_tile.Content = tile_factory_.Get(TileContentType.OIL);
     }
     public void SetDestination(TD_Tile arg_tile)
     {

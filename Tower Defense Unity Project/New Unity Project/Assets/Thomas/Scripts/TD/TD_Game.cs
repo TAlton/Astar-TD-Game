@@ -20,15 +20,17 @@ public class TD_Game : MonoBehaviour
     [SerializeField] TD_Map_Manager map_manager_ => this.GetComponent<TD_Map_Manager>();
     public TD_Enemy prefab_enemy_;
     public List<TD_Enemy> list_enemies_;
-    private List<TD_Tile> list_path_;
+    private List<TD_Tile> list_path_default_;
+    private List<TD_Tile> list_path_hovering_;
     Ray ray_ => Camera.main.ScreenPointToRay(Input.mousePosition);
     // Start is called before the first frame update
     void Start()
     {
         map_.Init(tile_factory_, map_manager_.Open());
         list_enemies_ = new List<TD_Enemy>();
-        list_path_ = new List<TD_Tile>();
-        list_path_ = pathfinding_.Resolve(map_.spawn_points_[0].transform.position);
+        //implementing new spawnpoints will just be Range of spawn points
+        list_path_default_ = pathfinding_.Resolve(map_.spawn_points_[0].transform.position, EnemyType.DEFAULT);
+        list_path_hovering_ = pathfinding_.Resolve(map_.spawn_points_[0].transform.position, EnemyType.HOVERING);
         InvokeRepeating("SpawnEnemy", 0.0f, 0.25f);
     }
 
@@ -68,18 +70,13 @@ public class TD_Game : MonoBehaviour
             {
                 ls_tile.Content = tile_factory_.Get(TileContentType.SPAWN);
             }
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                map_.ToggleOil(ls_tile);
+            }
         }
         if (Input.GetKeyDown(TD_Map_Manager.SAVE_KEY_))
             map_manager_.Save();
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            list_path_ = pathfinding_.Resolve(map_.spawn_points_[0].transform.position);
-            SpawnEnemy();
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            list_enemies_[0].list_path_ = list_path_;
-        }
     }
     public void SpawnEnemy()
     {
@@ -89,7 +86,6 @@ public class TD_Game : MonoBehaviour
             return;
         }
 
-        
         enemies_spawned_++;
         TD_Enemy temp = Instantiate(prefab_enemy_, new Vector3(map_.spawn_points_[0].transform.position.x, 0.0f, map_.spawn_points_[0].transform.position.z), Quaternion.identity);
         int chosen_type = Random.Range(0, 3);
@@ -98,7 +94,7 @@ public class TD_Game : MonoBehaviour
         {
             case (int)(EnemyType.DEFAULT):
                 {
-                    temp.list_path_ = list_path_;
+                    temp.list_path_ = list_path_default_;
                     break;
                 }
             case (int)(EnemyType.FLYING):
@@ -109,7 +105,7 @@ public class TD_Game : MonoBehaviour
                 }
             case (int)(EnemyType.HOVERING):
                 {
-                    temp.list_path_ = list_path_;
+                    temp.list_path_ = list_path_hovering_;
                     break;
                 }
         }

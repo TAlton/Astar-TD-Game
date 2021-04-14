@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TileContentType { EMPTY = 0, DESTINATION, WALL, TOWER, SPAWN}
+public enum TileContentType { EMPTY = 0, DESTINATION, WALL, TOWER, SPAWN, OIL}
 
 public class TD_Tile_Content : MonoBehaviour
 {
