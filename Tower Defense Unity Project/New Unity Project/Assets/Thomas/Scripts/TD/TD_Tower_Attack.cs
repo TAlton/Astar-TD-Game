@@ -19,7 +19,7 @@ public class TD_Tower_Attack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        InvokeRepeating("GetEnemiesInRange", 0f, 0.5f);
+        //InvokeRepeating("GetEnemiesInRange", 0f, 0.5f);
     }
     void GetEnemiesInRange()
     {

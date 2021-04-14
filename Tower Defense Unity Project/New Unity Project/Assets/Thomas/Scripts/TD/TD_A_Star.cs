@@ -23,9 +23,9 @@ public class TD_A_Star : MonoBehaviour
     {
 
     }
-    public void Resolve(Vector3 arg_start)
+    public List<TD_Tile> Resolve(Vector3 arg_start)
     {
-        ResolveAStar(GetTileByPosition(new Vector3(arg_start.x, 0f, arg_start.z)), map_.destination_);
+        return ResolveAStar(GetTileByPosition(new Vector3(arg_start.x, 0f, arg_start.z)), map_.destination_);
     }
     TD_Tile GetTileByPosition(Vector3 argPos)
     {
@@ -172,9 +172,9 @@ public class TD_A_Star : MonoBehaviour
 
         return ls_neighbours;
     }
-    void ResolveAStar(TD_Tile arg_start, TD_Tile arg_dest)
+    public List<TD_Tile> ResolveAStar(TD_Tile arg_start, TD_Tile arg_dest)
     {
-        if (null == arg_start || null == arg_dest) return;
+        if (null == arg_start || null == arg_dest) return null;
 
         List<TD_Tile> ls_open_items = new List<TD_Tile> { arg_start };
         HashSet<TD_Tile> ls_closed_items = new HashSet<TD_Tile>();
@@ -190,7 +190,7 @@ public class TD_A_Star : MonoBehaviour
 
             if (ls_current_tile == arg_dest)
             {
-                TracePath(arg_start, arg_dest);
+                return TracePath(arg_start, arg_dest);
             }
 
             ls_current_tile = ls_open_items[0];
@@ -224,13 +224,14 @@ public class TD_A_Star : MonoBehaviour
                         //neighbour.GetComponentInChildren<MeshRenderer>().material = (Material)(Resources.Load("pathing"));
                         if(neighbour == arg_dest)
                         {
-                            TracePath(arg_start, arg_dest);
-                            return;
+                            return TracePath(arg_start, arg_dest);
                         }
                         ls_open_items.Add(neighbour);
                     }
                 }
             }
         }
+
+        return null;
     }
 }

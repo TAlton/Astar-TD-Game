@@ -4,8 +4,9 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - floor_: {instanceID: 0}
-  - prefab_: {fileID: 8757410431352547997, guid: e05a360309cb6ac4a9273bbf0ea2db7b, type: 3}
+  - prefab_tile_: {fileID: 5290614874748367161, guid: e05a360309cb6ac4a9273bbf0ea2db7b, type: 3}
+  - prefab_enemy_: {fileID: 2392893495854990931, guid: 562111ff64dfa4143983d8b24eb37ab2, type: 3}
+  - destination_: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

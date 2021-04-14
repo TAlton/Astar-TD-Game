@@ -14,17 +14,19 @@ public class TD_Game : MonoBehaviour
     [SerializeField] TD_Map map_ => this.GetComponent<TD_Map>();
     [SerializeField] TD_A_Star pathfinding_ => this.GetComponent<TD_A_Star>();
     [SerializeField] TD_Tile_Factory tile_factory_;
+    [SerializeField] TD_Enemy_Factory enemy_factory_;
     [SerializeField] TD_Map_Manager map_manager_ => this.GetComponent<TD_Map_Manager>();
+    public TD_Enemy prefab_enemy_;
+    public List<TD_Enemy> list_enemies_;
+    private List<TD_Tile> list_path_;
     Ray ray_ => Camera.main.ScreenPointToRay(Input.mousePosition);
-    List<TD_Enemy_Type> list_enemies_;
     // Start is called before the first frame update
     void Start()
     {
-        //map_ = this.GetComponent<TD_Map>();
-        //map_manager_ = this.GetComponent<TD_Map_Manager>();
-        //pathfinding_ = this.GetComponent<TD_A_Star>();
         map_.Init(tile_factory_, map_manager_.Open());
-        list_enemies_ = new List<TD_Enemy_Type>();
+        list_enemies_ = new List<TD_Enemy>();
+        list_path_ = new List<TD_Tile>();
+        //SpawnEnemy();
         //map_.Init(map_width_, map_height_, tile_factory_);
     }
 
@@ -68,7 +70,21 @@ public class TD_Game : MonoBehaviour
         if (Input.GetKeyDown(TD_Map_Manager.SAVE_KEY_))
             map_manager_.Save();
         if (Input.GetKeyDown(KeyCode.Q))
-            pathfinding_.Resolve(map_.spawn_points_[0].transform.position);
+        {
+            list_path_ = pathfinding_.Resolve(map_.spawn_points_[0].transform.position);
+            SpawnEnemy();
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            list_enemies_[0].list_path_ = list_path_;
+        }
 
+    }
+    public void SpawnEnemy()
+    {
+        TD_Enemy temp = Instantiate(prefab_enemy_, new Vector3(map_.spawn_points_[0].transform.position.x, 0.5f, map_.spawn_points_[0].transform.position.z), Quaternion.identity);
+        temp.Type = enemy_factory_.Get(EnemyType.DEFAULT);
+        temp.list_path_ = list_path_;
+        list_enemies_.Add(temp);
     }
 }

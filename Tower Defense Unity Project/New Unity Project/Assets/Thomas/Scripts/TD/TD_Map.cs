@@ -5,7 +5,7 @@ using UnityEngine;
 public class TD_Map : MonoBehaviour
 {
     public Vector2Int map_size_;
-    public TD_Tile prefab_;
+    public TD_Tile prefab_tile_;
     public TD_Tile destination_;
     public List<TD_Tile> spawn_points_;
     public TD_Tile[,] map_tiles_;
@@ -33,13 +33,13 @@ public class TD_Map : MonoBehaviour
         map_tiles_ = new TD_Tile[arg_y, arg_x];
 
         //offset caries on tile scale; this could be 0.5 for performance sake
-        Vector2 ls_offset = new Vector2((map_size_.x  - 1) * (prefab_.transform.localScale.x / 2), (map_size_.y - 1) * (prefab_.transform.localScale.y / 2));
+        Vector2 ls_offset = new Vector2((map_size_.x  - 1) * (prefab_tile_.transform.localScale.x / 2), (map_size_.y - 1) * (prefab_tile_.transform.localScale.y / 2));
 
         for(int i_y = 0; i_y < map_size_.y; i_y++)
         {
             for(int i_x = 0; i_x < map_size_.x; i_x++)
             {
-                TD_Tile ls_tile = map_tiles_[i_y, i_x] = Instantiate(prefab_);
+                TD_Tile ls_tile = map_tiles_[i_y, i_x] = Instantiate(prefab_tile_);
                 ls_tile.transform.position = new Vector3(i_x - ls_offset.x, 0, i_y - ls_offset.y);
                 ls_tile.Content = tile_factory_.Get(TileContentType.EMPTY);
                 ls_tile.Parent = null;
@@ -56,7 +56,7 @@ public class TD_Map : MonoBehaviour
         map_tiles_ = new TD_Tile[map_size_.y, map_size_.x];
 
         //offset caries on tile scale; this could be 0.5 for performance sake
-        Vector2 ls_offset = new Vector2((map_size_.x - 1) * (prefab_.transform.localScale.x / 2), (map_size_.y - 1) * (prefab_.transform.localScale.y / 2));
+        Vector2 ls_offset = new Vector2((map_size_.x - 1) * (prefab_tile_.transform.localScale.x / 2), (map_size_.y - 1) * (prefab_tile_.transform.localScale.y / 2));
 
         int ls_loaded_tiles_index = 1;
 
@@ -71,7 +71,7 @@ public class TD_Map : MonoBehaviour
                     if (arg_loaded_tiles[ls_loaded_tiles_index].x == i_x &&
                     arg_loaded_tiles[ls_loaded_tiles_index].y == i_y)
                     {
-                        ls_tile = map_tiles_[i_y, i_x] = Instantiate(prefab_);
+                        ls_tile = map_tiles_[i_y, i_x] = Instantiate(prefab_tile_);
                         ls_tile.transform.position = new Vector3(i_x - ls_offset.x, 0, i_y - ls_offset.y);
                         ls_tile.Content = tile_factory_.Get((TileContentType)(arg_loaded_tiles[ls_loaded_tiles_index].z));
 
@@ -107,7 +107,7 @@ public class TD_Map : MonoBehaviour
                     }
                 }
                 
-                ls_tile = map_tiles_[i_y, i_x] = Instantiate(prefab_);
+                ls_tile = map_tiles_[i_y, i_x] = Instantiate(prefab_tile_);
                 ls_tile.transform.position = new Vector3(i_x - ls_offset.x, 0, i_y - ls_offset.y);
                 ls_tile.Content = tile_factory_.Get(TileContentType.EMPTY);
                 ls_tile.Parent = null;
@@ -121,8 +121,8 @@ public class TD_Map : MonoBehaviour
     {
         if (Physics.Raycast(arg_ray, out RaycastHit hit))
         {
-            int ls_x = (int)(hit.point.x + map_size_.x * (prefab_.transform.localScale.x / 2));
-            int ls_y = (int)(hit.point.z + map_size_.y * (prefab_.transform.localScale.y / 2));
+            int ls_x = (int)(hit.point.x + map_size_.x * (prefab_tile_.transform.localScale.x / 2));
+            int ls_y = (int)(hit.point.z + map_size_.y * (prefab_tile_.transform.localScale.y / 2));
             if(ls_x >= 0 && ls_x < map_tiles_.GetLength(1) &&
                 ls_y >= 0 && ls_y < map_tiles_.GetLength(0))
             {

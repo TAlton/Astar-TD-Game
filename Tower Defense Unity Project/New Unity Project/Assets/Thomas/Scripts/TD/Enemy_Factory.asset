@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7983f7290765206439c5d098187176b2, type: 3}
+  m_Name: Enemy_Factory
+  m_EditorClassIdentifier: 
+  prefab_default_enemy_: {fileID: 7148333919738649425, guid: ff87febd22244d448bfae3ee2d1f15f1, type: 3}
+  prefab_flying_enemy_: {fileID: 5618844424007298024, guid: 664de494ff4489347b34a4568243a732, type: 3}
+  prefab_hovering_enemy_: {fileID: 142675452279935239, guid: 447067971ac951440913a376448bcd7b, type: 3}

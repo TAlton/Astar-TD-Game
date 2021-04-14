@@ -7,6 +7,7 @@ public class TD_Enemy_Type : MonoBehaviour
 {
     [SerializeField] EnemyType type_ = EnemyType.DEFAULT;
     TD_Enemy_Factory origin_;
+    
     public EnemyType Type => type_;
     // Start is called before the first frame update
     void Start()

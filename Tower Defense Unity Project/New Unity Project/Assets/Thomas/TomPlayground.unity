@@ -266,10 +266,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   map_width_: 20
   map_height_: 20
-  map_: {fileID: 0}
-  pathfinding_: {fileID: 0}
+  enemies_to_spawn_: 1
   tile_factory_: {fileID: 11400000, guid: 9ce5dd43cb79cbb43b577bcfa2a97769, type: 2}
-  map_manager_: {fileID: 0}
+  enemy_factory_: {fileID: 11400000, guid: 7ee7f115af8cf6c4e8daf2fa695946f9, type: 2}
+  list_enemies_: []
 --- !u!4 &1689820189
 Transform:
   m_ObjectHideFlags: 0
@@ -483,10 +483,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   map_width_: 0
   map_height_: 0
-  map_: {fileID: 0}
-  pathfinding_: {fileID: 0}
+  enemies_to_spawn_: 1
   tile_factory_: {fileID: 11400000, guid: 9ce5dd43cb79cbb43b577bcfa2a97769, type: 2}
-  map_manager_: {fileID: 0}
+  enemy_factory_: {fileID: 0}
+  list_enemies_: []
 --- !u!114 &2128338092
 MonoBehaviour:
   m_ObjectHideFlags: 0

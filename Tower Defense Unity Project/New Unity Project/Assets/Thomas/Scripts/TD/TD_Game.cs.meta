@@ -4,8 +4,9 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - map_: {instanceID: 0}
   - tile_factory_: {fileID: 11400000, guid: 9ce5dd43cb79cbb43b577bcfa2a97769, type: 2}
+  - enemy_factory_: {fileID: 11400000, guid: 7ee7f115af8cf6c4e8daf2fa695946f9, type: 2}
+  - prefab_enemy_: {fileID: 2392893495854990931, guid: 562111ff64dfa4143983d8b24eb37ab2, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

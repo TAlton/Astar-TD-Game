@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
+[CreateAssetMenu]
 public class TD_Enemy_Factory : ScriptableObject
 {
     [SerializeField] TD_Enemy_Type prefab_default_enemy_;
@@ -43,7 +44,7 @@ public class TD_Enemy_Factory : ScriptableObject
     }
     void MoveToFactoryScene(GameObject arg_obj)
     {
-        if (!content_scene.isLoaded)
+        if (!content_scene.isLoaded) 
         {
             if (Application.isEditor)
             {
