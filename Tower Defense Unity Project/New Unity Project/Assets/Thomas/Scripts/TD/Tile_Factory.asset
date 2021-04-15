@@ -17,3 +17,4 @@ MonoBehaviour:
   prefab_wall_: {fileID: 4896306130307560576, guid: c4ff4e0533d7fb246b1c9175d6d8d3e5, type: 3}
   prefab_tower_: {fileID: 4930005442452265031, guid: b8165d71a4ea359489d3598a82179977, type: 3}
   prefab_spawn_point_: {fileID: 5855066487807738587, guid: 87da47d78a6815b4983dbcc543f2a211, type: 3}
+  prefab_oil_: {fileID: 2678163387767047822, guid: 461d66e12a6991a469d47ceed59686c3, type: 3}

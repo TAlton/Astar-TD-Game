@@ -6,13 +6,14 @@ public class TD_Game : MonoBehaviour
 {
     public TD_Enemy prefab_enemy_;
     public List<TD_Enemy> list_enemies_;
+    [SerializeField] public int player_lives_ = 10;
     const int MAP_RANGE_MIN_ = 2;
     const int MAP_RANGE_MAX_ = 25;
     const int ENEMIES_RANGE_MIN_ = 1;
     const int ENEMIES_RANGE_MAX_ = 25;
     const int TOWER_COST_ = 50;
     const int OIL_COST_ = 25;
-    private int money_ = 100;
+    public int money_ = 100;
     private int enemies_spawned_ = 0;
     private List<TD_Tile> list_path_default_;
     private List<TD_Tile> list_path_hovering_;
@@ -24,7 +25,7 @@ public class TD_Game : MonoBehaviour
     [SerializeField] TD_A_Star pathfinding_ => this.GetComponent<TD_A_Star>();
     [SerializeField] TD_Tile_Factory tile_factory_;
     [SerializeField] TD_Enemy_Factory enemy_factory_;
-    [SerializeField] int player_lives_ = 10;
+
     [SerializeField] TD_Map_Manager map_manager_ => this.GetComponent<TD_Map_Manager>();
     Ray ray_ => Camera.main.ScreenPointToRay(Input.mousePosition);
     // Start is called before the first frame update
@@ -46,6 +47,7 @@ public class TD_Game : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if(player_lives_ <= 0)
         {
             Debug.Log("GAME OVER");

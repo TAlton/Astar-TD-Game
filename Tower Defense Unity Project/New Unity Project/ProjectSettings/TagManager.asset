@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Tile
   - Enemy
+  - GameManager
+  - currency_var
   layers:
   - Default
   - TransparentFX
@@ -14,7 +16,7 @@ TagManager:
   - Water
   - UI
   - Enemies
-  - 
+  - GameManager
   - 
   - 
   - 
