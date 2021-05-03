@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TD_Tower_Attack : MonoBehaviour
 {
+    //easy to implement new tower types based on prefabs
     [Range(0.5f, 25.0f)] public float range_;
     [SerializeField] private Collider[] collided_objects_;
     [SerializeField] private float fire_rate_;
@@ -13,7 +14,8 @@ public class TD_Tower_Attack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("GetEnemiesInRange", 0f, 0.25f);
+        //delay checks for performance
+        InvokeRepeating("GetEnemiesInRange", 0f, 0.1f);
         InvokeRepeating("Fire", 0.0f, fire_rate_);
     }
 

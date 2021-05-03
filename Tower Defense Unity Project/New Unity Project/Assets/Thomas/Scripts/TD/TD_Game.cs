@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class TD_Game : MonoBehaviour
 {
+    [SerializeField] public KeyCode bind_place_tower_;
+    [SerializeField] public KeyCode bind_place_oil_;
+    [SerializeField] public KeyCode bind_place_wall_;
+    [SerializeField] public KeyCode bind_place_spawn_;
+    [SerializeField] public KeyCode bind_place_destination_;
     [SerializeField] bool is_edit_mode_ = false;
     public TD_Enemy prefab_enemy_;
     public List<TD_Enemy> list_enemies_;
@@ -58,21 +63,21 @@ public class TD_Game : MonoBehaviour
 
         if (is_edit_mode_)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetKeyDown(bind_place_destination_))
             {
                 if (ls_tile != null)
                 {
                     map_.SetDestination(ls_tile);
                 }
             }
-            else if (Input.GetMouseButtonDown(1))
+            else if (Input.GetKeyDown(bind_place_wall_))
             {
                 if (ls_tile != null)
                 {
                     map_.ToggleWall(ls_tile);
                 }
             }
-            if (Input.GetKeyDown(KeyCode.P))
+            if (Input.GetKeyDown(bind_place_spawn_))
             {
                 ls_tile.Content = tile_factory_.Get(TileContentType.SPAWN);
             }
@@ -84,7 +89,7 @@ public class TD_Game : MonoBehaviour
 
         if(!round_has_started_)
         {
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(bind_place_tower_))
             {
                 if (money_ >= TOWER_COST_)
                 {
@@ -93,7 +98,7 @@ public class TD_Game : MonoBehaviour
                 }
             }
 
-            else if (Input.GetKeyDown(KeyCode.Q))
+            else if (Input.GetKeyDown(bind_place_oil_))
             {
                 if (money_ >= OIL_COST_)
                 {
@@ -101,16 +106,17 @@ public class TD_Game : MonoBehaviour
                         money_ -= OIL_COST_;
                 }
             }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                list_path_default_ = pathfinding_.Resolve(map_.spawn_points_[0].transform.position, EnemyType.DEFAULT);
+                list_path_hovering_ = pathfinding_.Resolve(map_.spawn_points_[0].transform.position, EnemyType.HOVERING);
+                //delay can be changed as difficulty increases
+                InvokeRepeating("SpawnEnemy", 0.0f, 0.25f);
+                round_has_started_ = true;
+            }
         }
 
-        else if(Input.GetKeyDown(KeyCode.Space))
-        {
-            list_path_default_ = pathfinding_.Resolve(map_.spawn_points_[0].transform.position, EnemyType.DEFAULT);
-            list_path_hovering_ = pathfinding_.Resolve(map_.spawn_points_[0].transform.position, EnemyType.HOVERING);
-            //delay can be changed as difficulty increases
-            InvokeRepeating("SpawnEnemy", 0.0f, 0.25f);
-            round_has_started_ = true;
-        }
+       
         if(round_has_started_ && list_enemies_.Count <= 0)
         {
             round_has_started_ = false;
