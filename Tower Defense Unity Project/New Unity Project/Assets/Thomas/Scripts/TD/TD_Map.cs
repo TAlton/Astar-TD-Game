@@ -7,6 +7,7 @@ public class TD_Map : MonoBehaviour
     public Vector2Int map_size_;
     public TD_Tile prefab_tile_;
     public TD_Tile destination_;
+    public TD_Tile spawn_;
     public List<TD_Tile> spawn_points_;
     public TD_Tile[,] map_tiles_;
     TD_Tile_Factory tile_factory_;
@@ -191,6 +192,16 @@ public class TD_Map : MonoBehaviour
 
         return false;
 
+    }
+    public void ToggleSpawn(TD_Tile arg_tile)
+    {
+        if (null != spawn_ && arg_tile.Content.Type == TileContentType.EMPTY)
+            spawn_.Content = tile_factory_.Get(TileContentType.EMPTY);
+        if (arg_tile.Content.Type == TileContentType.EMPTY)
+        {
+            spawn_ = arg_tile;
+            arg_tile.Content = tile_factory_.Get(TileContentType.SPAWN);
+        }
     }
     public void SetDestination(TD_Tile arg_tile)
     {

@@ -17,9 +17,9 @@ public class TD_Game : MonoBehaviour
     const int MAP_RANGE_MAX_ = 25;
     const int ENEMIES_RANGE_MIN_ = 1;
     const int ENEMIES_RANGE_MAX_ = 25;
-    const int TOWER_COST_ = 50;
-    const int OIL_COST_ = 25;
-    public int money_ = 100;
+    [SerializeField] public const int TOWER_COST_ = 50;
+    [SerializeField]  public const int OIL_COST_ = 25;
+    [SerializeField]  public int money_ = 100;
     private int enemies_spawned_ = 0;
     private List<TD_Tile> list_path_default_;
     private List<TD_Tile> list_path_hovering_;
@@ -38,7 +38,15 @@ public class TD_Game : MonoBehaviour
     void Start()
     {
         Debug.Log(money_);
-        map_.Init(tile_factory_, map_manager_.Open());
+        if (is_edit_mode_)
+        {
+            map_.Init(map_width_, map_height_, tile_factory_);
+        } else
+        {
+            map_.Init(tile_factory_, map_manager_.Open());
+        }
+            
+            
         list_enemies_ = new List<TD_Enemy>();
         //implementing new spawnpoints will just be Range of spawn points
         list_path_default_ = pathfinding_.Resolve(map_.spawn_points_[0].transform.position, EnemyType.DEFAULT);
@@ -79,7 +87,8 @@ public class TD_Game : MonoBehaviour
             }
             if (Input.GetKeyDown(bind_place_spawn_))
             {
-                ls_tile.Content = tile_factory_.Get(TileContentType.SPAWN);
+                map_.ToggleSpawn(ls_tile);
+                //ls_tile.Content = tile_factory_.Get(TileContentType.SPAWN);
             }
             if (Input.GetKeyDown(TD_Map_Manager.SAVE_KEY_))
             {
@@ -106,7 +115,7 @@ public class TD_Game : MonoBehaviour
                         money_ -= OIL_COST_;
                 }
             }
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space) && !is_edit_mode_)
             {
                 list_path_default_ = pathfinding_.Resolve(map_.spawn_points_[0].transform.position, EnemyType.DEFAULT);
                 list_path_hovering_ = pathfinding_.Resolve(map_.spawn_points_[0].transform.position, EnemyType.HOVERING);
@@ -136,6 +145,7 @@ public class TD_Game : MonoBehaviour
         }
 
         enemies_spawned_++;
+
         TD_Enemy temp = Instantiate(prefab_enemy_, new Vector3(map_.spawn_points_[0].transform.position.x, 0.0f, map_.spawn_points_[0].transform.position.z), Quaternion.identity);
         int chosen_type = Random.Range(1, 4);
         temp.Type = enemy_factory_.Get((EnemyType)(chosen_type));
@@ -148,7 +158,7 @@ public class TD_Game : MonoBehaviour
             }
             case (int)(EnemyType.FLYING):
             {
-                //flying enemies will fly to dest
+                //flying enemies will fly to directly to dest
                 temp.list_path_.Add(map_.destination_);
                 break;
             }
@@ -168,6 +178,12 @@ public class TD_Game : MonoBehaviour
         list_enemies_.TrimExcess();
         Destroy(arg_enemy.transform.root.gameObject);
     }
+    public void DespawnEnemy(TD_Enemy arg_enemy)
+    {
+        list_enemies_.Remove(arg_enemy);
+        list_enemies_.TrimExcess();
+        Destroy(arg_enemy.transform.root.gameObject);
+    }
     public void RemoveLife()
     {
         if (player_lives_ > 1)
@@ -176,6 +192,10 @@ public class TD_Game : MonoBehaviour
             return;
         }
         //end game stuff
-
+        if (player_lives_ <= 0)
+        {
+            Debug.Log("GAME OVER");
+            Application.Quit();
+        }
     }
 }

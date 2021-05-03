@@ -56,7 +56,7 @@ public class TD_Enemy : MonoBehaviour
                 if(current_path_index == list_path_.Count - 1)
                 {
                     game_.RemoveLife();
-                    game_.KillEnemy(this);
+                    game_.DespawnEnemy(this);
                 }
                 current_path_index++;
             }
