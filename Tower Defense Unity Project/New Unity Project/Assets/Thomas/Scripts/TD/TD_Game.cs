@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TD_Game : MonoBehaviour
 {
+    [SerializeField] bool is_edit_mode_ = false;
     public TD_Enemy prefab_enemy_;
     public List<TD_Enemy> list_enemies_;
     [SerializeField] public int player_lives_ = 10;
@@ -54,45 +55,54 @@ public class TD_Game : MonoBehaviour
             Application.Quit();
         }
         TD_Tile ls_tile = map_.GetTile(ray_);
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    if (ls_tile != null)
-        //    {
-        //        map_.SetDestination(ls_tile);
-        //    }
-        //}
-        //else if (Input.GetMouseButtonDown(1))
-        //{
-        //    if (ls_tile != null)
-        //    {
-        //        map_.ToggleWall(ls_tile);
-        //    }
-        //}
-        if (Input.GetKeyDown(KeyCode.F))
+
+        if (is_edit_mode_)
         {
-            if (money_ >= TOWER_COST_)
+            if (Input.GetMouseButtonDown(0))
             {
-                if (map_.ToggleTower(ls_tile))
-                    money_ -= TOWER_COST_;
+                if (ls_tile != null)
+                {
+                    map_.SetDestination(ls_tile);
+                }
+            }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                if (ls_tile != null)
+                {
+                    map_.ToggleWall(ls_tile);
+                }
+            }
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                ls_tile.Content = tile_factory_.Get(TileContentType.SPAWN);
+            }
+            if (Input.GetKeyDown(TD_Map_Manager.SAVE_KEY_))
+            {
+                map_manager_.Save();
             }
         }
-        //if (Input.GetKeyDown(KeyCode.P))
-        //{
-        //    ls_tile.Content = tile_factory_.Get(TileContentType.SPAWN);
-        //}
-        else if (Input.GetKeyDown(KeyCode.Q))
+
+        if(!round_has_started_)
         {
-            if(money_ >= OIL_COST_)
+            if (Input.GetKeyDown(KeyCode.F))
             {
-                if (map_.ToggleOil(ls_tile))
-                    money_ -= OIL_COST_;
+                if (money_ >= TOWER_COST_)
+                {
+                    if (map_.ToggleTower(ls_tile))
+                        money_ -= TOWER_COST_;
+                }
+            }
+
+            else if (Input.GetKeyDown(KeyCode.Q))
+            {
+                if (money_ >= OIL_COST_)
+                {
+                    if (map_.ToggleOil(ls_tile))
+                        money_ -= OIL_COST_;
+                }
             }
         }
-        //else if (Input.GetKeyDown(TD_Map_Manager.SAVE_KEY_))
-        //{
-        //    map_manager_.Save();
-        //}
-        //start game
+
         else if(Input.GetKeyDown(KeyCode.Space))
         {
             list_path_default_ = pathfinding_.Resolve(map_.spawn_points_[0].transform.position, EnemyType.DEFAULT);
